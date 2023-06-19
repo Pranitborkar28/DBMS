@@ -1,0 +1,393 @@
+show databases;
+use database_name;
+create database database_name;
+drop database database_name;
+create database if not exists database_name;
+DDL commands works on database objects
+1.create
+2.alter
+3.drop
+4.truncate
+5.rename
+DML 
+1.insert
+2.update
+3.delete
+DRL
+select
+TCL
+1.commit
+2.rollback
+3.savepoint
+creating table:
+create table table_name(co1 datatype constraint,co2 datatype constraint,......);
+constrints(primaary key,not null,unique,foreign key,check)
+create table table_name(co1 datatype ,.....,constraint_name(col_name1,col_name2,..));
+create table table_name(co1 datatype ,.....,primary key(col_name1,col_name2));(combination of two columns as primary key)
+create table table_name(co1 datatype ,.....,foreign key(col_name1) references table_name(col_name2));
+create table table_name(co1 datatype ,.....,foreign key(col_name1) references table_name(col_name2) on delete cascade);(allows deleting data directly from parent table)
+create table table_name(co1 datatype check(condition),.....);(check constrint)
+desc table_name;
+inserting into table:
+insert into table_name values(val1,val2,...);
+insert into table_name (co1,co2,....) valuess(val1,val2,...);
+insert into table_name values(val1,val2,...),(val1,val2,...),...;
+selecting :
+select *from table_name;(select all columns)
+select col1,col2,.. from table_name;
+select col1 as column_name ,col2 as column_name,col3+5000 as column_name from table_name;(change column name at time of query,add 5000 to each salary row )
+update table_name set col1=val,col2=val2,.. where condition;(update specific row)
+where clause: 
+select *from table_name where condition;
+select *from table_name where coulumn > 14000;(arithmatic opertaor does bot work on null values)
+select *from table_name where column_name is null;(we have to use is)
+select distinct * from table_name;(unique records)
+Logoical Operator:(to check more than one condition)
+select *from table_name where cond1 and cond2;(both conditons should satisfy)
+select *from table_name where cond1 or cond2;(either of both conditons should satisfy)
+select *from table_name where not cond1 ;(other than cond1)
+between and in operator:
+select *from table_name where coloumn_name between val1 and val2;(all records between this range including val1 and val2)
+select *from table_name where coloumn_name not between val1 and val2;
+select *from table_name where coloumn_name in (val1,val2,val3,..);(records exactly having these values)
+select *from table_name where coloumn_name in (val1,val2,val3,..);
+pattern matching operators:
+select *from column_name where column_name like 's%';(column satarting with s chracter);
+select *from column_name where column_name like '%s';(column ending with s chracter);
+select *from column_name where column_name like '%s%';(column having s in its name );
+select *from column_name where column_name  not like 's%';(column satarting with s chracter);
+select *from column_name where column_name like '%s_';(column with second last s chracter);
+select *from column_name where column_name like '___';(column with three chracter);
+Alter:
+alter table table_name add column column_name datatype;(add new column to exisiting table)
+alter table table_name drop column column_name;(delete column)
+alter table table_name modify column column_name modification;(modifying column)
+alter table table_name rename column old_name to new_name;(renaming column)
+rename table old_name to new_name;(renaming table)
+drop:deletes data as well as structure of table
+truncate:permanently deletes the data but structure remains same
+delete:temporary deletes the data data can be rolled back
+drop database_name;
+drop table table_name;
+set autocommit=0;
+delete from table_name;
+delete from table_name where cond ;(deletes data of only one roW)
+rollback;(retrives data back)
+truncate table table_name;
+commit;(makes changes permanently)
+built in functions:
+string functions;
+select upper(col_name) from table-name;(convert data to upper case)
+select lower(col_name) from table-name;
+select length(col_name) from table-name;(no of character)
+select trim('      welcome     ');(space will be deleted)
+select trim('z' from 'zzoraclezz');(z will be deleted)
+select instr('welcome','e'); (position of e will be given)
+select substr('oracle',start_pos,ending_pos);(will return substring from starting pos to ending pos)
+select concat(col1_name,col2_name) as name from table_name;(join two string)
+select replace('hello world','world','uniiverse');
+numeric functions;
+select abs(-40);(absolute value)
+select sqrt(val);(square root)
+select mod(numerator,denominator) ;
+select power(base,pow);
+select truncate (40.1234,3);(40.123)
+select truncate(6896,-2);(6800)
+select greatest(val,...);
+select least(val,....);
+select curdate();(current date)
+select curtime();
+select now();(date and time);
+select sysdate();(system date)
+select month('date'); select monthname('date')
+select year ('date');
+select day('date');
+select datediff(date1,date2);
+select timediff(time1,time2);
+aggregate functions;
+select count(*) from table_name;(no of rows)
+select sum(col) from table_name;
+select avg(col) from table_name;
+select min(col) from table_name;
+select max(col) from table_name;
+select group_concat(col) from table_name;(concates values from mul rows into single string)
+group by:
+select col_name,sum(col1) from table_name group by col_name;(display sum of co1 grouped by col_name)
+select dept_id,avg(sal) from empolyee group by dept_id;(avg sal of each and every dept) 
+select dept_id,job_id,count(*) from empolyee group by dept_id,job_id;(all possible combinations of job id and dept id and the total empolyees working in it) 
+having (always followed by group by);
+select dept_id,avg(sal) from empolyee group by dept_id having avg(sal)>20000;(returns rows having salary more than 20000 after grouping)
+<>(not  equal to)
+order by(sorting data)
+select *from table_name order by col_name;(sorting in asscending order)
+select *from table_name order by col_name desc;(sorting in desscending order)
+where......group by....having....orderby
+select dept_id,sum(sal) from emp where dept_id<>50 group by dept_id having sum(sal)>10000 order by sum(sal) desc;
+auto increment:(col must be primary key)
+sno int(5) primary key auto_increment(increments automatically by 1)
+alter table table_name auto_increment=100;
+limit:
+select *from table_name limit 10;
+select *from table_name limit 5,10;(from 5 10 rows)
+views:(logical object)
+creating view:
+create view view_name as sql query;
+select *from view_name;
+drop view view_name;
+index:(increse performance)
+create index index_name on table_name(col_name);
+drop index index_name on table_name;
+to retrive data from mul tables use union or join or subquery:
+union and union all:
+select col1 from table1 union select col2 from table2;(datatype of col1 and col2 must be same,order must be same,no of columns must be same)
+select col1 from table1 union all select col2 from table2;(dublicates are allowed)
+join:
+select *from table_name1 inner join table_name2 on table_name.col1=table_name2.col2;(inner join)
+select *from table_name1 left join table_name2 on col1=col2;(left join)
+select *from table_name1 right join table_name2 on col1=col2;(right join)
+select *from table_name1 full join table_name2 on col1=col2;(full join)
+select col1,col2,...table2.commoncolumn from table_name1 inner join table_name2 on tab1.id=tab2.id;(inner join)
+select E.empolyee_id,M.empolyee_id,E.first_name from empolyee E,empolyee M where E.empolyee_id=M.Manager_id;(self join)
+sub query:
+select *from emp where salary <(select *from emp where first_name='yash');(sal less than yash)
+select max(sal) from emp where sal<(select max(sal) from emp);(2nd highest sal)
+select max(sal) from emp where sal<(select max(sal) from emp where sal<(select max(sal) from emp));(3rd highest)
+select *from emp where sal=(select max(sal) from emp);(all empolyees earning hihest sal)
+select *fromm emp where sal in (select sal from emp where dept_id=30);(empolyees whose  sal is equal to the sal of atleast one emp in dept_id=30)
+select *fromm emp where sal <any (select sal from emp where dept_id=30);(empolyees whose  sal is less than  the sal of atleast one emp in dept_id=30)
+select *fromm emp where sal <all (select sal from emp where dept_id=30);
+If-then-elseif:
+Syntax:
+IF conditional1 THEN
+Sequence_of_statements1 
+ELSEIF condition2 THEN
+Sequence_of_statements2
+ELSE
+Sequence_of_statements3
+ENDIF;
+While loop:
+WHILE condition do
+Sequence_of_statements
+END while;
+procedure1:
+DELIMITER //
+
+CREATE PROCEDURE calculate_fine(IN p_roll_no INT, IN p_book_name VARCHAR(255))
+BEGIN
+  DECLARE v_issue_date DATE;
+  DECLARE v_status CHAR(1);
+  DECLARE v_fine_amt DECIMAL(10,2);
+  DECLARE v_days_late INT;
+
+  -- Retrieve borrower details
+  SELECT DateofIssue, Status INTO v_issue_date, v_status
+  FROM Borrower
+  WHERE Rollin = p_roll_no AND NameofBook = p_book_name;
+
+  -- Calculate the number of days late
+  SET v_days_late = DATEDIFF(CURDATE(), v_issue_date);
+
+  -- Check if fine is applicable
+  IF v_days_late > 0 THEN
+    -- Calculate the fine amount
+    IF v_days_late > 30 THEN
+      SET v_fine_amt = 50 * v_days_late;
+    ELSE
+      SET v_fine_amt = 5 * v_days_late;
+    END IF;
+
+    -- Store fine details in the Fine table
+    INSERT INTO Fine (Roll_no, Date, Amt)
+    VALUES (p_roll_no, CURDATE(), v_fine_amt);
+  END IF;
+
+  -- Update the status to 'R' (Returned)
+  UPDATE Borrower
+  SET Status = 'R'
+  WHERE Rollin = p_roll_no AND NameofBook = p_book_name;
+
+  -- Output the result
+  SELECT CONCAT('Fine amount: Rs ', v_fine_amt) AS result;
+END //
+
+DELIMITER ;
+
+
+trigger1:
+Delimiter $$
+create trigger ins_student
+Before Insert ON
+Student for each row
+Begin
+Insert into Book(rno,bid,status)
+values(new.rno,new.bid,'I');
+end $$
+delimiter ;
+
+trigger2:
+DELIMITER //
+
+CREATE TRIGGER library_update_trigger
+AFTER UPDATE ON Library
+FOR EACH ROW
+BEGIN
+  -- Insert the audit record for update operation
+  INSERT INTO Library_Audit (book_id, book_title, author, action)
+  VALUES (OLD.book_id, OLD.book_title, OLD.author, 'UPDATE');
+END //
+
+CREATE TRIGGER library_delete_trigger
+AFTER DELETE ON Library
+FOR EACH ROW
+BEGIN
+  -- Insert the audit record for delete operation
+  INSERT INTO Library_Audit (book_id, book_title, author, action)
+  VALUES (OLD.book_id, OLD.book_title, OLD.author, 'DELETE');
+END //
+
+DELIMITER ;
+
+ 
+cursor1:
+DELIMITER //
+
+CREATE PROCEDURE proc_increment1()
+BEGIN
+    DECLARE vfinished INT DEFAULT 0;
+    DECLARE si INT;
+    DECLARE n VARCHAR(25);
+    DECLARE sr INT(2);
+    
+    DECLARE emp_cursor CURSOR FOR SELECT * FROM sailors;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET vfinished = 1;
+    
+    OPEN emp_cursor;
+    
+    cursor_loop:loop
+        FETCH emp_cursor INTO si, n, sr;
+        
+        IF vfinished = 1 THEN
+            LEAVE cursor_loop;
+        END IF;
+        
+        UPDATE sailors SET srating = srating + 2;
+    END loop cursor_loop;
+    
+    CLOSE emp_cursor;
+END //
+
+DELIMITER ;
+calling:
+call proc_increment!();
+
+cursor2:
+DELIMITER //
+
+CREATE PROCEDURE proc_Grade()
+BEGIN
+  DECLARE v_roll INT;
+  DECLARE v_name VARCHAR(255);
+  DECLARE v_class VARCHAR(255);
+  DECLARE v_marks INT;
+
+  DECLARE cur_students CURSOR FOR
+    SELECT Roll, Name, Total_marks
+    FROM Stud_Marks;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND
+    SET v_roll = NULL;
+
+  OPEN cur_students;
+
+  -- Loop through each student
+  student_loop: LOOP
+    FETCH cur_students INTO v_roll, v_name, v_marks;
+
+    IF v_roll IS NULL THEN
+      LEAVE student_loop;
+    END IF;
+
+    IF v_marks <= 1500 AND v_marks >= 990 THEN
+      SET v_class := 'Distinction';
+    ELSEIF v_marks <= 989 AND v_marks >= 900 THEN
+      SET v_class := 'First Class';
+    ELSEIF v_marks <= 899 AND v_marks >= 825 THEN
+      SET v_class := 'Higher Second Class';
+    ELSE
+      SET v_class := 'Not Classified';
+    END IF;
+
+    INSERT INTO Result (Roll, Name, Class)
+    VALUES (v_roll, v_name, v_class);
+  END LOOP;
+
+  CLOSE cur_students;
+END //
+
+DELIMITER ;
+
+cursor3:
+DELIMITER //
+
+CREATE PROCEDURE merge_data_proc()
+BEGIN
+  -- Declare variables for cursor and fetched row
+  DECLARE v_column1 INT;
+  DECLARE v_column2 VARCHAR(255);
+  DECLARE done int default 0;
+  DECLARE e  int default 0;
+  -- Create a cursor
+  DECLARE cur_data CURSOR FOR
+    SELECT column1, column2
+    FROM N_RollCall;
+
+  -- Declare handlers for exceptions
+  DECLARE CONTINUE HANDLER FOR NOT FOUND
+    SET done = 1;
+
+  -- Open the cursor
+  OPEN cur_data;
+
+  -- Loop through each row in the cursor
+  data_loop: LOOP
+    -- Fetch the next row
+    FETCH cur_data INTO v_column1, v_column2;
+
+    -- Exit the loop if no more rows to fetch
+    IF done = 1 THEN
+      LEAVE data_loop;
+    END IF;
+
+    -- Check if the row exists in O_RollCall
+    SELECT count(*) INTO e
+    FROM O_RollCall
+    WHERE column1 = v_column1;
+
+    -- If the row does not exist, insert it into O_RollCall
+    IF e=0 THEN
+      INSERT INTO O_RollCall (column1, column2)
+      VALUES (v_column1, v_column2);
+    END IF;
+  END LOOP;
+
+  -- Close the cursor
+  CLOSE cur_data;
+END //
+
+DELIMITER ;
+
+
+
+Mongo db:
+db.collection.insertOne({ field1: value1, field2: value2, ... })
+db.collection.insertMany([{ field1: value1, field2: value2, ... }, { field1: value3, field2: value4, ... }])
+db.collection.find({ field: value })
+db.collection.findOne({ field: value })
+db.collection.updateOne({ field: value }, { $set: { fieldToUpdate: updatedValue } })
+db.collection.updateMany({ field: value }, { $set: { fieldToUpdate: updatedValue } })
+db.collection.deleteOne({ field: value })
+db.collection.deleteMany({ field: value })
+db.collection.find().pretty()
+
+
+
